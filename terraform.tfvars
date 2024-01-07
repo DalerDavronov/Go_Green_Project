@@ -1,6 +1,6 @@
 security_groups = {
   "server_sg" : {
-    description = "Security group for app servers"
+    description = "Security group for app server"
     ingress_rules = [
       {
         description = "ingress rule for http"

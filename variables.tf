@@ -24,4 +24,7 @@ variable "security_groups" {
     }))
   }))
 }
-
+variable "prefix" {
+  type    = string
+  default = "default"
+}
