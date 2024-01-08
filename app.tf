@@ -7,13 +7,7 @@ resource "aws_vpc" "main" {
         Name = "Main VPC"
     }
 }
-resource "aws_internet_gateway" "igw" {
-  vpc_id = aws_vpc.main.id
 
-  tags = {
-    Name = "Main Igw"
-  }
-}
 resource "aws_security_group" "server_sg" {
   name        = "server-sg"
   vpc_id      = aws_vpc.main.id
@@ -34,7 +28,6 @@ resource "aws_cloudwatch_metric_alarm" "cloud_watch" {
 }
 resource "aws_launch_configuration" "app_server_launch_config" {
   name = "app-server-launch-config"
-  
   image_id        = var.ami
   instance_type   = "t2.micro"
 
@@ -55,9 +48,9 @@ resource "aws_subnet" "subnet_private_1b" {
   availability_zone       = "us-west-1c"
 }
 resource "aws_instance" "app-server" {
+  count         = aws_autoscaling_group.app_server_autoscaling_group.desired_capacity
   ami           = var.ami
   instance_type = "t2.micro"
-  count = 1
   subnet_id     = aws_subnet.subnet_private_1a.id
   tags = {
     Name = "app-server-${count.index + 1}"
@@ -97,7 +90,7 @@ resource "aws_instance" "app-server" {
 resource "aws_autoscaling_group" "app_server_autoscaling_group" {
   desired_capacity     = 2
   max_size             = 5
-  min_size             = 0
+  min_size             = 1
   vpc_zone_identifier = [aws_subnet.subnet_private_1a.id, aws_subnet.subnet_private_1b.id]
   launch_configuration = aws_launch_configuration.app_server_launch_config.id
   health_check_type          = "EC2"
