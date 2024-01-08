@@ -9,3 +9,11 @@ resource "aws_db_instance" "rds" {
   parameter_group_name = "default.mysql5.7"
   skip_final_snapshot  = true
 }
+resource "aws_s3_bucket" "s3-bucket" {
+  bucket = "my-tf-test-bucket"
+
+  tags = {
+    Name        = "My S3-Bucket"
+    Environment = "Dev"
+  }
+}

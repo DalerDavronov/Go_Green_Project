@@ -28,16 +28,6 @@ resource "aws_cloudwatch_metric_alarm" "http_errors_alarm" {
   alarm_actions = [aws_sns_topic.http_errors_sns_topic.arn]
 }
 
-resource "aws_sns_topic" "http_errors_sns_topic" {
-  name = "HTTPErrorsTopic"
-}
-
-resource "aws_sns_topic_subscription" "http_errors_sns_subscription" {
-  topic_arn = aws_sns_topic.http_errors_sns_topic.arn
-  protocol  = "email"
-  endpoint  = "admin@example.com"  
-}
-
 resource "aws_launch_configuration" "web_launch_config" {
   name_prefix = "web-launch-config"
   image_id = var.ami
