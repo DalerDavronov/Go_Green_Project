@@ -1,6 +1,5 @@
 resource "aws_wafv2_web_acl" "acfp-waf" {
   name        = "ACFP-WAF"
-  description = "Example of a managed ACFP rule."
   scope       = "CLOUDFRONT"
 
   default_action {
